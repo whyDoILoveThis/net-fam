@@ -15,10 +15,25 @@ import {
 import { Input } from "@/components/ui/input";
 import { SignupValidation } from "@/lib/validation";
 import Loader from "@/components/shared/Loader";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
+import {
+  useCreateUserAccount,
+  useSignInAccount,
+} from "@/lib/react-query/queriesAndMutations";
+import { useUserContext } from "@/context/AuthContext";
 
 const SignupForm = () => {
-  const isLoading = false;
+  const { toast } = useToast();
+  const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
+  const navigate = useNavigate();
+
+  const { mutateAsync: createUserAccount, isLoading: isCreatingUser } =
+    useCreateUserAccount();
+
+  const { mutateAsync: signInAccount, isPending: isSigningIn } =
+    useSignInAccount();
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof SignupValidation>>({
     resolver: zodResolver(SignupValidation),
@@ -31,10 +46,41 @@ const SignupForm = () => {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof SignupValidation>) {
+  async function onSubmit(values: z.infer<typeof SignupValidation>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+    const newUser = await createUserAccount(values);
+
+    if (!newUser) {
+      return toast({
+        title:
+          "There was a problem signing you up.. An account wasn't created. Please, give it another try🤯",
+      });
+    }
+
+    const session = await signInAccount({
+      email: values.email,
+      password: values.password,
+    });
+
+    if (!session) {
+      return toast({
+        title:
+          "There was a problem signing you into your account.. Please, give it another try🤯",
+      });
+    }
+
+    const isLoggedIn = await checkAuthUser();
+
+    if (isLoggedIn) {
+      form.reset();
+      navigate("/");
+    } else {
+      return toast({
+        title:
+          "There was a problem signing you into your account.. Please, give it another try🤯",
+      });
+    }
   }
 
   return (
@@ -42,7 +88,7 @@ const SignupForm = () => {
       <Form {...form}>
         <div className="sm:w-420 flex-center flex-col">
           <img src="/assets/images/logo.svg" alt="logo" />
-          <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12"></h2>
+          <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">Sign Up</h2>
           <p className="text-light-3 small-medium md:base-regular mt-2">
             Enter account details to use My Space
           </p>
@@ -109,7 +155,7 @@ const SignupForm = () => {
               )}
             />
             <Button type="submit" className="shad-button_primary">
-              {isLoading ? (
+              {isCreatingUser ? (
                 <div className="flex-center gap-2">
                   <Loader /> Loading...
                 </div>
