@@ -1,3 +1,5 @@
+
+
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 
 @tailwind base;
@@ -8,7 +10,7 @@
   * {
     @apply box-border list-none p-0 m-0 scroll-smooth;
   }
-
+  
   body {
     @apply bg-dark-1 text-white min-h-screen font-inter;
   }
@@ -276,5 +278,8 @@
 
   .shad-button_ghost {
     @apply flex gap-4 items-center justify-start hover:bg-transparent hover:text-white !important;
+  }
+  .its-logout-btn:hover > img {
+    @apply invert-white;
   }
 }

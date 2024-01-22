@@ -7,7 +7,7 @@ import { useUserContext } from "@/context/AuthContext";
 const Topbar = () => {
   const { mutate: signOut, isSuccess } = useSignOutAccount();
   const navigate = useNavigate();
-  const user = useUserContext();
+  const { user } = useUserContext();
 
   useEffect(() => {
     if (isSuccess) {
@@ -35,7 +35,7 @@ const Topbar = () => {
           >
             <img src="/assets/icons/logout.svg" alt="logout" />
           </Button>
-          <Link to={"/profile/${user.id}"} className="flex-center gap-3"></Link>
+          <Link to={`/profile/${user.id}`} className="flex-center gap-3"></Link>
           <img
             src={user.imageUrl || "/assets/images/profile-placeholder.svg"}
             alt="profile img"
