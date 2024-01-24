@@ -201,3 +201,71 @@ export async function uploadFile(file: File) {
 
     return posts;
   }
+
+
+  // ============================== LIKE POST
+
+  export async function likePost(postId: string, likesArray: string[]) {
+    try {
+      const updatedPost = await databases.updateDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.postCollectionId,
+        postId,
+        {
+          likes: likesArray
+        }
+      )
+
+      if(!updatedPost) throw Error
+
+      return updatedPost
+    } catch (err) {
+      console.log(err);
+      
+    }
+  }
+
+   // ============================== SAVE POST
+
+   export async function savePost(postId: string, userId: string) {
+    try {
+      const updatedPost = await databases.createDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.savedCollectionId,
+        ID.unique(),
+        {
+          user: userId,
+          post: postId,
+        }
+      )
+
+      if(!updatedPost) throw Error
+        console.log('no err, returning updated post');
+        
+      return updatedPost
+    } catch (err) {
+      console.log(err);
+      
+    }
+  }
+
+     // ============================== SAVE POST
+
+     export async function deleteSavedPost(savedRecordId: string) {
+      try {
+        const statusCode = await databases.deleteDocument(
+          appwriteConfig.databaseId,
+          appwriteConfig.savedCollectionId,
+          savedRecordId
+         
+        )
+  
+        if(!statusCode) throw Error
+  
+        return {status: 'ok'}
+      } catch (err) {
+        console.log(err);
+        
+      }
+    }
+  

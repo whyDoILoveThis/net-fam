@@ -26,3 +26,7 @@ export function timeAgoConverter(timestamp: string) {
       return `${seconds} seconds ago`;
   }
 }
+
+export const checkIsLiked = (likeList: string[], userId: string) => {
+  return likeList.includes(userId);
+};
