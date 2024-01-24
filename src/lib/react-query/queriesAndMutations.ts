@@ -7,7 +7,7 @@ import {
 import {
     
     createPost,
-  createUserAccount, signInAccount, signOutAccount
+  createUserAccount, getRecentPosts, signInAccount, signOutAccount
   } from "@/lib/appwrite/api";
 import {  } from '../appwrite/api'
 import { INewPost, INewUser } from '@/types'
@@ -47,3 +47,11 @@ export const useCreatePost = () => {
       },
     });
   };
+
+
+export const useGetRecentPosts = () => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
+    queryFn: getRecentPosts,
+  })
+}
