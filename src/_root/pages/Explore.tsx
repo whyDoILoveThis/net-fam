@@ -7,20 +7,26 @@ import {
   useGetPosts,
   useSearchPosts,
 } from "@/lib/react-query/queriesAndMutations";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { InView, useInView } from "react-intersection-observer";
 
 const Explore = () => {
-  const { data: posts, fetchNextPost, hasNextPage } = useGetPosts();
+  const { ref } = useInView();
+  const { data: posts, fetchNextPage, hasNextPage } = useGetPosts();
 
   const [searchValue, setSearchValue] = useState("");
-  const debouncedValue = useDebounce(searchValue, 500);
+  const debouncedValue = useDebounce(searchValue, 0);
 
   const { data: searchedPosts, isFetching: isSearchFetching } =
     useSearchPosts(debouncedValue);
 
+  useEffect(() => {
+    if (InView && !searchValue) fetchNextPage();
+  }, [InView, searchValue]);
+
   if (!posts) {
     return (
-      <div className="flex-center w-ful h-full">
+      <div className=" flex-center w-full h-full">
         <Loader />
       </div>
     );
@@ -31,6 +37,8 @@ const Explore = () => {
   const ShowPosts =
     !showSearchResults &&
     posts.pages.every((item) => item?.documents.length === 0);
+  console.log("explore - ", searchedPosts);
+
   return (
     <div className="explore-container">
       <div className="explore-inner_container">
@@ -65,15 +73,23 @@ const Explore = () => {
       </div>
       <div className="flex flex-wrap gap-9 w-full max-w-full">
         {showSearchResults ? (
-          <SearchResults />
+          <SearchResults
+            isSeachFetching={isSearchFetching}
+            searchedPosts={searchedPosts}
+          />
         ) : ShowPosts ? (
           <p className="text-light-4 mt-10 text-center w-full">End of posts</p>
         ) : (
           posts.pages.map((item, index) => (
-            <GridPostList key={`page-${index}`} posts={item?.documents} />
+            <GridPostList key={`page-${index}`} posts={item.documents} />
           ))
         )}
       </div>
+      {hasNextPage && !searchValue && (
+        <div ref={ref} className="mt-10">
+          <Loader />
+        </div>
+      )}
     </div>
   );
 };
