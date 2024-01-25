@@ -248,6 +248,12 @@
   }
 }
 
+.test {
+  width: 200px;
+  height: 200px;
+  background: #620ad4
+}
+
 @layer components {
   /* SHADCN COMPONENTS */
   /* Form */

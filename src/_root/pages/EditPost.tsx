@@ -13,7 +13,7 @@ const EditPost = () => {
     <div className="flex flex-1">
       <div className="common-container">
         <div className="max-w-5xl flex-start gap-3 justif-start w-full">
-          <img width={60} src="/assets/icons/edit-post-page.svg" />
+          <img width={35} src="/assets/icons/edit-post-page.svg" />
           <h2 className="h3-bold md:h2-bold text-left w-full">Edit Post</h2>
         </div>
         <PostForm action="Update" post={post} />

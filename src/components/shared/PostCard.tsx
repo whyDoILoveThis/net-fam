@@ -30,7 +30,7 @@ const PostCard = ({ post }: PostCardProps) => {
             </p>
             <div className="flex-center gap-2 text-light-3">
               <p className="subtle-semibold lg:small-regular">
-                {timeAgoConverter(post.$createdAt)}
+                {timeAgoConverter(post.$createdAt || "")}
               </p>
               -
               <p className="subtle-semibold lg:small-regular">
@@ -49,7 +49,7 @@ const PostCard = ({ post }: PostCardProps) => {
       <Link to={`/post/${post.$id}`}>
         <div className="small-medium lg:base-medium py-5">
           <p>{post.caption}</p>
-          <ul className="flex gap-1 mt-2">
+          <ul className="flex gap-1 mt-2 flex-wrap">
             {post.tags.map((tag: string) => (
               <li key={tag} className="text-light-3">
                 #{tag}
