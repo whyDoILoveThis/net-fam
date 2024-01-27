@@ -20,6 +20,7 @@ module.exports = {
     },
     extend: {
       colors: {
+        'back-300': '#aeaeae10',
         'primary-500': '#877EFF',
         'primary-600': '#5D5FEF',
         'secondary-500': '#FFB620',
@@ -35,6 +36,7 @@ module.exports = {
         'light-4': '#5C5C7B',
       },
       screens: {
+        'xxs': '320px',
         'xs': '480px',
       
       },

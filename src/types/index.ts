@@ -38,6 +38,7 @@ export type IUser = {
   email: string;
   imageUrl: string;
   bio: string;
+  liked: object;
 };
 
 export type INewUser = {

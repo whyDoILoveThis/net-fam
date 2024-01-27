@@ -16,6 +16,12 @@
   }
 }
 
+.test-color {
+  width: 200px;
+  height: 200px;
+  background: #aeaeae10
+}
+
 @layer utilities {
   /* TYPOGRAPHY */
   .h1-bold {
@@ -98,11 +104,11 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: #09090a;
+    background: transparent;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #5c5c7b;
+    background: #6c5dc1;
     border-radius: 50px;
   }
 
@@ -190,7 +196,7 @@
 
   /* Bottom bar */
   .bottom-bar {
-    @apply z-50 flex-between w-full sticky bottom-0 rounded-t-[20px] bg-dark-2 px-5 py-4 md:hidden;
+    @apply z-50 flex-between w-full fixed bottom-0 rounded-t-[20px] bg-dark-2 px-5 py-4 md:hidden;
   }
 
   /* File uploader */
@@ -239,19 +245,13 @@
 
   /* Topbar */
   .topbar {
-    @apply sticky top-0 z-50 md:hidden bg-dark-2 w-full;
+    @apply fixed top-0 z-50 md:hidden bg-dark-2 w-full;
   }
 
   /* User card */
   .user-card {
     @apply flex-center flex-col gap-4 border border-dark-4 rounded-[20px] px-5 py-8;
   }
-}
-
-.test {
-  width: 200px;
-  height: 200px;
-  background: #620ad4
 }
 
 @layer components {

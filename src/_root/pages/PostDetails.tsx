@@ -2,21 +2,32 @@ import Loader from "@/components/shared/Loader";
 import PostStats from "@/components/shared/PostStats";
 import { Button } from "@/components/ui/button";
 import { useUserContext } from "@/context/AuthContext";
-import { useGetPostById } from "@/lib/react-query/queriesAndMutations";
+import {
+  useDeletePost,
+  useGetPostById,
+} from "@/lib/react-query/queriesAndMutations";
 import { timeAgoConverter } from "@/lib/utils";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const PostDetails = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const { data: post, isPending } = useGetPostById(id || "");
   const { user } = useUserContext();
 
-  function handleDeletePost(
-    event: MouseEvent<HTMLButtonElement, MouseEvent>
-  ): void {
-    throw new Error("Function not implemented.");
-  }
+  const {
+    mutate: deletePost,
+    isPending: isPendingDelete,
+    isSuccess: isDeleted,
+  } = useDeletePost();
 
+  const handleDeletePost = () => {
+    deletePost({ postId: id || "", imageId: post?.imageId });
+  };
+
+  if (isDeleted) {
+    navigate(-1);
+  }
   //satisfy typescript
   return (
     <div className="post_details-container">
@@ -47,22 +58,22 @@ const PostDetails = () => {
                     <p className="base-medium lg:body-bold text-light-1">
                       {post?.creator.name}
                     </p>
-                    <div className="flex-center gap-2 text-light-3">
+                    <div className="flex-center text-light-3">
                       <p className="subtle-semibold lg:small-regular">
                         {post && timeAgoConverter(post.$createdAt || "8888")}
                       </p>
-                      -
+
                       <p className="subtle-semibold lg:small-regular">
-                        {post?.location}
+                        &nbsp;-&nbsp;{post?.location}
                       </p>
                     </div>
                   </div>
                 </Link>
 
-                <div className="flex-center ">
+                <div className="flex-center ml-3">
                   <Link
                     className={`${user.id !== post?.creator.$id && "hidden"}`}
-                    to={`update-post/${post?.$id}`}
+                    to={`/update-post/${post?.$id}`}
                   >
                     {" "}
                     <img
@@ -83,16 +94,20 @@ const PostDetails = () => {
                       user.id !== post?.creator.$id && "hidden"
                     }`}
                   >
-                    <img
-                      style={{
-                        border: "1px solid grey",
-                        borderRadius: "10px",
-                        padding: "0.2rem",
-                      }}
-                      src="/assets/icons/delete.svg"
-                      alt="delete"
-                      width={27}
-                    />
+                    {isPendingDelete || isDeleted ? (
+                      <Loader />
+                    ) : (
+                      <img
+                        style={{
+                          border: "1px solid grey",
+                          borderRadius: "10px",
+                          padding: "0.2rem",
+                        }}
+                        src="/assets/icons/delete.svg"
+                        alt="delete"
+                        width={27}
+                      />
+                    )}
                   </Button>
                 </div>
               </div>

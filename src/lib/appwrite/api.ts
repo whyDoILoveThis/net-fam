@@ -82,6 +82,24 @@ export async function getCurrentUser() {
     }
 }
 
+export async function getAllUsers() {
+  try {
+   
+
+      const users = await databases.listDocuments(
+          appwriteConfig.databaseId,
+          appwriteConfig.userCollectionId,
+          [Query.orderDesc('$createdAt'), Query.limit(20)]
+      )
+
+      if(!users) { throw Error; }
+
+      return users;
+  } catch (err) {
+      console.log(err);
+      
+  }
+}
 export async function signOutAccount() {
     try {
         const session = await account.deleteSession("current");
@@ -249,6 +267,21 @@ export async function uploadFile(file: File) {
     }
   }
 
+  // ============================== GET SAVED POSTS
+
+  export async function getSavedPosts () {
+    const savedPosts = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.savedCollectionId,
+      [Query.orderDesc('$createdAt'), Query.limit(20)]
+    )
+    
+
+    if(!savedPosts) throw Error
+
+    return savedPosts;
+  }
+
      // ============================== DELETE SAVED POST
 
      export async function deleteSavedPost(savedRecordId: string) {
@@ -364,7 +397,7 @@ export async function uploadFile(file: File) {
 
 
   export async function getInfinitePosts({pageParam} : {pageParam: number}) {
-    const queries: any[] = [Query.orderDesc('$updatedAt'), Query.limit(20)]
+    const queries: any[] = [Query.orderDesc('$updatedAt'), Query.limit(4)]
 
     if(pageParam) {
       queries.push(Query.cursorAfter(pageParam.toString()))

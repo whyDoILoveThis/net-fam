@@ -8,10 +8,10 @@ import {
   useSearchPosts,
 } from "@/lib/react-query/queriesAndMutations";
 import { useEffect, useState } from "react";
-import { InView, useInView } from "react-intersection-observer";
+import { useInView } from "react-intersection-observer";
 
 const Explore = () => {
-  const { ref } = useInView();
+  const { ref, inView } = useInView();
   const { data: posts, fetchNextPage, hasNextPage } = useGetPosts();
 
   const [searchValue, setSearchValue] = useState("");
@@ -21,8 +21,8 @@ const Explore = () => {
     useSearchPosts(debouncedValue);
 
   useEffect(() => {
-    if (InView && !searchValue) fetchNextPage();
-  }, [InView, searchValue]);
+    if (inView && !searchValue) fetchNextPage();
+  }, [inView, fetchNextPage]);
 
   if (!posts) {
     return (
@@ -31,13 +31,16 @@ const Explore = () => {
       </div>
     );
   }
-  console.log(posts);
 
   const showSearchResults = searchValue !== "";
   const ShowPosts =
     !showSearchResults &&
     posts.pages.every((item) => item?.documents.length === 0);
-  console.log("explore - ", searchedPosts);
+
+  console.log(posts);
+  console.log("ShowPosts - ", ShowPosts);
+  console.log("fetchNextPage - ", fetchNextPage);
+  console.log("InView - ", inView);
 
   return (
     <div className="explore-container">
@@ -77,18 +80,21 @@ const Explore = () => {
             isSeachFetching={isSearchFetching}
             searchedPosts={searchedPosts}
           />
-        ) : ShowPosts ? (
-          <p className="text-light-4 mt-10 text-center w-full">End of posts</p>
         ) : (
           posts.pages.map((item, index) => (
-            <GridPostList key={`page-${index}`} posts={item.documents} />
+            <GridPostList key={`page-${index}`} posts={item?.documents} />
           ))
         )}
       </div>
-      {hasNextPage && !searchValue && (
+      {(hasNextPage && !searchValue) || isSearchFetching ? (
         <div ref={ref} className="mt-10">
           <Loader />
         </div>
+      ) : (
+        !hasNextPage &&
+        !searchValue && (
+          <p className="text-light-4 mt-4 text-center w-full">End of posts</p>
+        )
       )}
     </div>
   );
