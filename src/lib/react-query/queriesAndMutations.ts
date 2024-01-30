@@ -7,7 +7,7 @@ import {
 import {
     
     createPost,
-  createUserAccount, deletePost, deleteSavedPost, getAllUsers, getCurrentUser, getInfinitePosts, getPostById, getRecentPosts, getSavedPosts, likePost, savePost, searchPosts, signInAccount, signOutAccount, updatePost
+  createUserAccount, deletePost, deleteSavedPost, getAllUsers, getCurrentUser, getInfinitePosts, getPostById, getRecentPosts, getSavedPosts, likePost, savePost, searchPosts, searchUsers, signInAccount, signOutAccount, updatePost
   } from "@/lib/appwrite/api";
 import {  } from '../appwrite/api'
 import { INewPost, INewUser, IUpdatePost } from '@/types'
@@ -186,6 +186,14 @@ export const useSearchPosts = (searchTerm: string) => {
   return useQuery({
     queryKey: [QUERY_KEYS.SEARCH_POSTS, searchTerm],
     queryFn: () => searchPosts(searchTerm),
+    enabled: !!searchTerm
+  })
+}
+
+export const useSearchUsers = (searchTerm: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.SEARCH_USERS, searchTerm],
+    queryFn: () => searchUsers(searchTerm),
     enabled: !!searchTerm
   })
 }

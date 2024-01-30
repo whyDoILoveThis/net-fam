@@ -1,9 +1,11 @@
 import Loader from "@/components/shared/Loader";
 import PostStats from "@/components/shared/PostStats";
+import UserCard from "@/components/shared/UserCard";
 import { Button } from "@/components/ui/button";
 import { useUserContext } from "@/context/AuthContext";
 import {
   useDeletePost,
+  useGetAllUsers,
   useGetPostById,
 } from "@/lib/react-query/queriesAndMutations";
 import { timeAgoConverter } from "@/lib/utils";
@@ -14,6 +16,7 @@ const PostDetails = () => {
   const { id } = useParams();
   const { data: post, isPending } = useGetPostById(id || "");
   const { user } = useUserContext();
+  const { data: users } = useGetAllUsers();
 
   const {
     mutate: deletePost,
@@ -28,7 +31,9 @@ const PostDetails = () => {
   if (isDeleted) {
     navigate(-1);
   }
-  //satisfy typescript
+
+  console.log("?????????", post);
+
   return (
     <div className="post_details-container">
       {isPending ? (
@@ -43,32 +48,22 @@ const PostDetails = () => {
           <div className="flex-between">
             <div className="post_details-info">
               <div className="flex-between w-full">
-                <Link
-                  className="flex gap-3 items-center"
-                  to={`/profile/${post?.creator.$id}`}
-                >
-                  <img
-                    src={
-                      post?.creator.imageUrl ||
-                      "/assets/icons/profile-placeholer.svg"
-                    }
-                    className="rounded-full w-8 lg:h-12"
+                <div className="flex flex-wrap">
+                  <UserCard
+                    allUsers={users}
+                    propUser={post?.creator}
+                    isOnPostCard={true}
                   />
-                  <div className="flex flex-col">
-                    <p className="base-medium lg:body-bold text-light-1">
-                      {post?.creator.name}
+                  <div className="flex-center text-light-3">
+                    <p className="subtle-semibold lg:small-regular">
+                      {post && timeAgoConverter(post.$createdAt || "8888")}
                     </p>
-                    <div className="flex-center text-light-3">
-                      <p className="subtle-semibold lg:small-regular">
-                        {post && timeAgoConverter(post.$createdAt || "8888")}
-                      </p>
 
-                      <p className="subtle-semibold lg:small-regular">
-                        &nbsp;-&nbsp;{post?.location}
-                      </p>
-                    </div>
+                    <p className="subtle-semibold lg:small-regular">
+                      &nbsp;-&nbsp;{post?.location}
+                    </p>
                   </div>
-                </Link>
+                </div>
 
                 <div className="flex-center ml-3">
                   <Link

@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import { useUserContext } from "@/context/AuthContext";
 import { sidebarLinks } from "@/constants";
 import { INavLink } from "@/types";
-import UserCard from "./UserCard";
 import CurrentUserCard from "./CurrentUserCard";
 
 const LeftSidebar = () => {
@@ -18,11 +17,11 @@ const LeftSidebar = () => {
     if (isSuccess) {
       navigate(0);
     }
-  }, [isSuccess]);
+  }, [isSuccess, navigate]);
   return (
-    <nav className="leftsidebar">
+    <nav className="leftsidebar custom-scrollbar">
       <div className="flex flex-col gap-11">
-        <Link to="/" className="flex gap-3 items-center">
+        <Link to="/" className="flex gap-3 justify-center items-center">
           <img
             src="/assets/images/logo.svg"
             alt="logo"
@@ -62,7 +61,7 @@ const LeftSidebar = () => {
       </div>
       <Button
         variant="ghost"
-        className="its-logout-btn justify-start w-fit flex gap-2 hover:bg-red"
+        className="its-logout-btn justify-start w-fit flex gap-2 mt-4 hover:bg-red"
         onClick={() => signOut()}
       >
         <img src="/assets/icons/logout.svg" alt="logout" />

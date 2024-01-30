@@ -20,7 +20,8 @@ module.exports = {
     },
     extend: {
       colors: {
-        'back-300': '#aeaeae10',
+        'back-see-thru': '#4444441d',
+        'back-300': '#24242499',
         'primary-500': '#877EFF',
         'primary-600': '#5D5FEF',
         'secondary-500': '#FFB620',

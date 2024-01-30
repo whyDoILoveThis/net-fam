@@ -27,6 +27,17 @@ export function timeAgoConverter(timestamp: string) {
   }
 }
 
+export function extractFirstWord(input: string): string {
+  // Trim leading and trailing spaces
+  const trimmedInput = input.trim();
+  
+  // Find the index of the first space
+  const spaceIndex = trimmedInput.indexOf(' ');
+  
+  // If no space is found, return the entire string; otherwise, return the substring up to the first space
+  return spaceIndex === -1 ? trimmedInput : trimmedInput.substring(0, spaceIndex);
+}
+
 export const checkIsLiked = (likeList: string[], userId: string) => {
   return likeList.includes(userId);
 };

@@ -3,31 +3,30 @@ import { timeAgoConverter } from "@/lib/utils";
 import { Models } from "appwrite";
 import { Link } from "react-router-dom";
 import PostStats from "./PostStats";
+import UserCard from "./UserCard";
+import { useGetAllUsers } from "@/lib/react-query/queriesAndMutations";
 
 type PostCardProps = {
   post: Models.Document;
 };
 
 const PostCard = ({ post }: PostCardProps) => {
-  console.log(post);
+  const { data: users } = useGetAllUsers();
 
+  console.log("📮📮📮📮📮📮📮📮", users);
+
+  const isRenderedOnPostCard = true;
   const { user } = useUserContext();
   return (
     <div className="post-card">
       <div className="flex-between">
-        <div className="flex items-center gap-3">
-          <Link to={`/profile/${post.creator.$id}`}>
-            <img
-              src={
-                post?.creator.imageUrl || "/assets/icons/profile-placeholer.svg"
-              }
-              className="rounded-full w-12 lg:h-12"
-            />
-          </Link>
+        <div className="flex flex-col items-center gap-3">
+          <UserCard
+            allUsers={users}
+            propUser={post.creator}
+            isOnPostCard={isRenderedOnPostCard}
+          />
           <div className="flex flex-col">
-            <p className="base-medium lg:body-bold text-light-1">
-              {post.creator.name}
-            </p>
             <div className="flex-center gap-2 text-light-3">
               <p className="subtle-semibold lg:small-regular">
                 {timeAgoConverter(post.$createdAt || "")}

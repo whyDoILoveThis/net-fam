@@ -26,7 +26,7 @@ const Explore = () => {
 
   if (!posts) {
     return (
-      <div className=" flex-center w-full h-full">
+      <div className=" flex-center mt-10 w-full h-full">
         <Loader />
       </div>
     );
@@ -74,7 +74,7 @@ const Explore = () => {
           />
         </div>
       </div>
-      <div className="flex flex-wrap gap-9 w-full max-w-full">
+      <div className="flex flex-wrap justify-center gap-9 w-full max-w-full">
         {showSearchResults ? (
           <SearchResults
             isSeachFetching={isSearchFetching}

@@ -16,10 +16,22 @@
   }
 }
 
+.blur-bg {
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+}
+
+.thisIsMe::before {
+  content: '⭐me';
+  position: absolute;
+  top: 2px;
+  left: 5px;
+}
+
 .test-color {
   width: 200px;
   height: 200px;
-  background: #aeaeae10
+  background: #3E2FFF;
 }
 
 @layer utilities {
@@ -97,22 +109,22 @@
     @apply flex justify-start items-center;
   }
 
-  .custom-scrollbar::-webkit-scrollbar {
+  html::-webkit-scrollbar,.custom-scrollbar::-webkit-scrollbar {
     width: 3px;
     height: 3px;
     border-radius: 2px;
   }
 
-  .custom-scrollbar::-webkit-scrollbar-track {
+  html::-webkit-scrollbar,.custom-scrollbar::-webkit-scrollbar-track {
     background: transparent;
   }
 
-  .custom-scrollbar::-webkit-scrollbar-thumb {
+  html::-webkit-scrollbar,.custom-scrollbar::-webkit-scrollbar-thumb {
     background: #6c5dc1;
     border-radius: 50px;
   }
 
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  html::-webkit-scrollbar,.custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #7878a3;
   }
 
@@ -227,7 +239,7 @@
 
   /* Left sidebar */
   .leftsidebar {
-    @apply hidden md:flex px-6 py-10 flex-col justify-between min-w-[270px] bg-dark-2;
+    @apply hidden md:flex px-6 py-10 overflow-y-auto flex-col justify-between min-w-[270px] bg-dark-2;
   }
 
   .leftsidebar-link {

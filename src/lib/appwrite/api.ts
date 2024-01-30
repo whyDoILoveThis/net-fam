@@ -435,3 +435,20 @@ export async function uploadFile(file: File) {
       
     }
   }
+
+  export async function searchUsers(searchTerm : string) {
+    try {
+     const posts = await databases.listDocuments(
+       appwriteConfig.databaseId,
+       appwriteConfig.userCollectionId,
+       [Query.search('name', searchTerm)]
+     )
+
+     if(!posts) throw Error
+
+     return posts
+   } catch (err) {
+     console.log(err);
+     
+   }
+ }

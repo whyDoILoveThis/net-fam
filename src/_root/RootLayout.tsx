@@ -8,7 +8,7 @@ const RootLayout = () => {
     <div className="w-full md:flex">
       <Topbar />
       <LeftSidebar />
-      <section className="flex flex-1 h-full pt-16 pb-14">
+      <section className="flex flex-1 w-full  pt-16 pb-14 md:pb-0">
         <Outlet />
       </section>
       <Bottombar />

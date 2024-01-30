@@ -1,6 +1,6 @@
 import { Models } from "appwrite";
 import Loader from "./Loader";
-import GridPostList from "./GridPostList";
+import UserCard from "./UserCard";
 
 type SearchResultsProps = {
   isSearchFetching: boolean;
@@ -11,16 +11,20 @@ const SearchResults = ({
   isSearchFetching,
   searchedPosts,
 }: SearchResultsProps) => {
-  if (isSearchFetching)
-    return (
-      <div className="mt-10">
-        <Loader />
-      </div>
-    );
+  if (isSearchFetching) return <Loader />;
   console.log("searchedPosts - ", searchedPosts);
 
   if (searchedPosts && searchedPosts.documents.length > 0)
-    return <GridPostList posts={searchedPosts.documents} />;
+    return (
+      <>
+        {searchedPosts &&
+          searchedPosts.documents.map(
+            (user: Models.Document, index: number) => (
+              <UserCard key={index} propUser={user} />
+            )
+          )}
+      </>
+    );
   return (
     <>
       {searchedPosts ? (
